@@ -10,7 +10,7 @@ import random
 env = gym.make('LunarLander-v2')
 env.seed(0)
 
-from dqn_agent import Agent
+from agent import Agent
 
 agent = Agent(state_size=8, action_size=4, seed=0)
 
@@ -59,4 +59,4 @@ ax = fig.add_subplot(111)
 plt.plot(np.arange(len(scores)), scores)
 plt.ylabel('Score')
 plt.xlabel('Episode #')
-plt.show()
+plt.savefig()

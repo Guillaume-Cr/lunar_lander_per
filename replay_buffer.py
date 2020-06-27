@@ -1,19 +1,29 @@
+import random
+from collections import namedtuple, deque
+import numpy as np
+from numpy.random import choice
+import torch
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 class ReplayBuffer:
     """Fixed-size buffer to store experience tuples."""
 
-    def __init__(self, action_size, buffer_size, batch_size, seed, compute_weights):
+    def __init__(self, action_size, buffer_size, batch_size, experiences_per_sampling, seed, compute_weights):
         """Initialize a ReplayBuffer object.
 
         Params
         ======
             action_size (int): dimension of each action
             buffer_size (int): maximum size of buffer
+            experiences_per_sampling (int): number of experiences to sample during a sampling iteration
             batch_size (int): size of each training batch
             seed (int): random seed
         """
         self.action_size = action_size
         self.buffer_size = buffer_size
         self.batch_size = batch_size
+        self.experiences_per_sampling = experiences_per_sampling
         
         self.alpha = 0.5
         self.alpha_decay_rate = 0.99
@@ -71,7 +81,7 @@ class ReplayBuffer:
         values = list(self.memory_data.values())
         random_values = random.choices(self.memory_data, 
                                        [data.probability for data in values], 
-                                       k=EXPERIENCES_PER_SAMPLING)
+                                       k=self.experiences_per_sampling)
         self.sampled_batches = [random_values[i:i + self.batch_size] 
                                     for i in range(0, len(random_values), self.batch_size)]
 

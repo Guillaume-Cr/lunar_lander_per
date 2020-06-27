@@ -1,6 +1,5 @@
 import numpy as np
 import random
-from collections import namedtuple, deque
 
 from model import QNetwork
 from replay_buffer import ReplayBuffer
@@ -9,7 +8,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from numpy.random import choice
 import math
 import operator
 
@@ -51,7 +49,8 @@ class Agent():
         self.criterion = nn.MSELoss()
 
         # Replay memory
-        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed, compute_weights)
+        self.memory = ReplayBuffer(
+            action_size, BUFFER_SIZE, BATCH_SIZE, EXPERIENCES_PER_SAMPLING, seed, compute_weights)
         # Initialize time step (for updating every UPDATE_NN_EVERY steps)
         self.t_step_nn = 0
         # Initialize time step (for updating every UPDATE_MEM_PAR_EVERY steps)
