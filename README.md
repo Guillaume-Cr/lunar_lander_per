@@ -11,6 +11,6 @@ Dependencies:
 
 This implementation refers to the Rank-based prioritization mentionned in the paper rather than the Proportional prioritization. This means that the priorities associated with each environment state are stored in a conventional container (Here a dictionnary) rather than in a sum tree.
 
-This implementation with PER only can solve the lunar-lander environment in about 1200 episodes. It could be further improved by adding a the dueling Q-Network implementation. The computation of the weights necessary for the dueling Q-Network are already implemented here. 
+This implementation with PER only can solve the lunar-lander environment in about 1200 episodes. It could be further improved by adding a the dueling Q-Network implementation. The computation of the weights necessary for the dueling Q-Network in combination with PER are already implemented here. 
 
 To run the training and observed the trained agent : `python launch.py`
