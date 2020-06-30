@@ -6,6 +6,7 @@ from collections import deque
 import matplotlib.pyplot as plt
 from collections import namedtuple, deque
 import random
+import time
 
 env = gym.make('LunarLander-v2')
 env.seed(0)
@@ -51,7 +52,11 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
             break
     return scores
 
+start_time = time.time()
 scores = dqn()
+elapsed_time = time.time() - start_time
+
+print("Training duration: ", elapsed_time)
 
 # plot the scores
 fig = plt.figure()
@@ -59,4 +64,4 @@ ax = fig.add_subplot(111)
 plt.plot(np.arange(len(scores)), scores)
 plt.ylabel('Score')
 plt.xlabel('Episode #')
-plt.savefig()
+plt.savefig('training_result.png')
