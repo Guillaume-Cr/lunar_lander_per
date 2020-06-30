@@ -86,19 +86,27 @@ class ReplayBuffer:
                                     for i in range(0, len(random_values), self.batch_size)]
 
     def update_parameters(self):
-        return True
         self.alpha *= self.alpha_decay_rate
         self.beta *= self.beta_growth_rate
         if self.beta > 1:
             self.beta = 1
         N = min(self.experience_count, self.buffer_size)
         self.priorities_sum_alpha = 0
-        for element in self.memory:
+        sum_prob_before = 0
+        for element in self.memory_data.values():
+            sum_prob_before += element.probability
             self.priorities_sum_alpha += element.priority**self.alpha
-        for element in self.memory:
-            self.memory[element.index].probability = element.priority**self.alpha / self.priorities_sum_alpha
+        sum_prob_after = 0
+        for element in self.memory_data.values():
+            probability = element.priority**self.alpha / self.priorities_sum_alpha
+            sum_prob_after += probability
+            weight = 1
             if self.compute_weights:
-                self.memory[element.index].weight = ((N *  element.priority)**(-self.beta))/self.weights_max
+                weight = ((N *  element.probability)**(-self.beta))/self.weights_max
+            d = self.data(element.priority, probability, weight, element.index)
+            self.memory_data[element.index] = d
+        print("sum_prob before", sum_prob_before)
+        print("sum_prob after : ", sum_prob_after)
     
     def add(self, state, action, reward, next_state, done):
         """Add a new experience to memory."""
@@ -107,7 +115,7 @@ class ReplayBuffer:
 
         if self.experience_count > self.buffer_size:
             temp = self.memory_data[index]
-            self.priorities_sum_alpha -= temp.probability**self.alpha
+            self.priorities_sum_alpha -= temp.priority**self.alpha
             if temp.priority == self.priorities_max:
                 self.memory_data[index].priority = 0
                 self.priorities_max = max(self.memory_data.items(), key=operator.itemgetter(1)).priority
