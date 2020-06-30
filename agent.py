@@ -16,11 +16,11 @@ BATCH_SIZE = 64             # minibatch size
 GAMMA = 0.99                # discount factor
 TAU = 1e-3                  # for soft update of target parameters
 LR = 5e-4                   # learning rate 
-UPDATE_NN_EVERY = 4         # how often to update the network
+UPDATE_NN_EVERY = 1        # how often to update the network
 
 # prioritized experience replay
-UPDATE_MEM_EVERY = 100          # how often to update the priorities
-UPDATE_MEM_PAR_EVERY = 1000     # how often to update the hyperparameters
+UPDATE_MEM_EVERY = 20          # how often to update the priorities
+UPDATE_MEM_PAR_EVERY = 3000     # how often to update the hyperparameters
 EXPERIENCES_PER_SAMPLING = math.ceil(BATCH_SIZE * UPDATE_MEM_EVERY / UPDATE_NN_EVERY)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
