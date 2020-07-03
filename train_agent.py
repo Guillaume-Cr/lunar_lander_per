@@ -15,7 +15,7 @@ from agent import Agent
 
 agent = Agent(state_size=8, action_size=4, seed=0)
 
-def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
+def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.001, eps_decay=0.995, train=True):
     """Deep Q-Learning.
     
     Params
@@ -29,6 +29,9 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
     scores = []                        # list containing scores from each episode
     scores_window = deque(maxlen=100)  # last 100 scores
     eps = eps_start                    # initialize epsilon
+
+    start_time = time.time()
+
     for i_episode in range(1, n_episodes+1):
         state = env.reset()
         score = 0
@@ -46,17 +49,19 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
         print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
         if i_episode % 100 == 0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
+            elapsed_time = time.time() - start_time
+            print("Duration: ", elapsed_time)
         if np.mean(scores_window)>=200.0:
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
             torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
             break
+    elapsed_time = time.time() - start_time
+    print("Training duration: ", elapsed_time)
     return scores
 
-start_time = time.time()
-scores = dqn()
-elapsed_time = time.time() - start_time
 
-print("Training duration: ", elapsed_time)
+scores = dqn()
+
 
 # plot the scores
 fig = plt.figure()
