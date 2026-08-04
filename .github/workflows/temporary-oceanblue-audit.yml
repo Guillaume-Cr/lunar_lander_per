@@ -3,7 +3,10 @@ name: Temporary Ocean Blue visual audit
 on:
   push:
     branches:
-      - temporary/oceanblue-v7-audit
+      - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 permissions:
@@ -15,7 +18,7 @@ jobs:
     timeout-minutes: 90
 
     steps:
-      - name: Check out audit branch
+      - name: Check out temporary audit branch
         uses: actions/checkout@v6
         with:
           ref: temporary/oceanblue-v7-audit
