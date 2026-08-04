@@ -1,0 +1,45 @@
+name: Temporary Ocean Blue visual audit
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out temporary audit branch
+        uses: actions/checkout@v6
+        with:
+          ref: temporary/oceanblue-v7-audit
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture all Ocean Blue pages
+        env:
+          PREVIEW_BASE: https://deploy-preview-21--guillaumeandlynn.netlify.app
+          ARTIST_VERSION: 2026-08-03-8
+        run: node temporary-oceanblue-audit.mjs
+
+      - name: Upload audit screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oceanblue-v7-independent-audit
+          path: oceanblue-v7-audit
+          if-no-files-found: warn
