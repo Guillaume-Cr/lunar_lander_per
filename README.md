@@ -1,3 +1,9 @@
+# Temporary Ocean Blue visual audit relay
+
+- [Rendered audit PDF](https://filebin.net/oceanblue-v8-20260804/visual-audit.pdf)
+- [Objective audit summary](https://filebin.net/oceanblue-v8-20260804/summary.json)
+- [Detailed audit metrics](https://filebin.net/oceanblue-v8-20260804/metrics.json)
+
 # lunar_lander_per
 
 Implementation of the Prioritized Experience Replay for the Deep Q-Network algorithm, following the publication from Tom Schaul, John Quan, Ioannis Antonoglou and David Silver : https://arxiv.org/pdf/1511.05952.pdf
